@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const parser = require("body-parser");
 const { validateToken } = require("./Utils/jwt");
 const userRoutes = require("./Routes/userRoutes");
@@ -8,6 +9,11 @@ const mailRoutes = require("./Routes/mailRoutes");
 
 const app = express();
 app.use(parser.json());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 
 app.use("/auth", authRoutes);
 app.use("/jwt", jwtRoutes);
