@@ -10,7 +10,8 @@ const findByParam = async (req, res) => {
     where: { id: req.user.id, date: req.body.date },
   })
     .then((resp) => {
-      res.status(200).json(resp);
+      const { data } = resp;
+      res.status(200).json(JSON.parse(data));
     })
     .catch((e) => {
       getError(e, res);
