@@ -140,9 +140,14 @@ const sendResetPasswordMail = async (req, res) => {
     where: { email },
   })
     .then((resp) => {
-      res.status(200).json({ message: "Email Verification Successfull" });
-
-      sendMail({ email, name: resp.name }, "reset-password");
+      if (resp) {
+        sendMail({ email, name: resp.name }, "reset-password");
+        return res
+          .status(200)
+          .json({ message: "Email Verification Successfull" });
+      } else {
+        return res.status(400).json({ errors: ["User not found"] });
+      }
     })
     .catch((e) => {
       getError(e, res);
