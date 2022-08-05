@@ -4,8 +4,8 @@ const { createToken, getTokenError } = require("../Utils/jwt");
 const { sendMail } = require("../Utils/nodeMailer");
 const { verify } = require("jsonwebtoken");
 const {
-  userRegisterValidation,
-  userLoginValidation,
+  registerValidation,
+  signinValidation,
 } = require("../Utils/hapiValidation");
 const getError = require("../Utils/sequelizeError");
 const e = require("express");
@@ -13,7 +13,7 @@ const e = require("express");
 const User = db.users;
 
 const register = async (req, res) => {
-  const { error } = userRegisterValidation.validate(req.body);
+  const { error } = registerValidation.validate(req.body);
   if (error)
     return res.status(400).json({ errors: [error.details[0].message] });
 
@@ -29,8 +29,8 @@ const register = async (req, res) => {
       });
   });
 };
-const login = async (req, res) => {
-  const { error } = userLoginValidation.validate(req.body);
+const signin = async (req, res) => {
+  const { error } = signinValidation.validate(req.body);
   if (error)
     return res.status(400).json({ errors: [error.details[0].message] });
 
@@ -174,7 +174,7 @@ const sendResetPasswordMail = async (req, res) => {
     });
 };
 module.exports = {
-  login,
+  signin,
   register,
   verifyEmail,
   resetPassword,
