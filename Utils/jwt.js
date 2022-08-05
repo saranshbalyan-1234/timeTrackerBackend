@@ -57,7 +57,7 @@ const getTokenError = (e, type) => {
     case "TokenExpiredError":
       return `${type} Token Expired`;
     default:
-      return `Invalid ${type} Found`;
+      return `Invalid ${type} Token`;
   }
 };
 const extractToken = (req) => {

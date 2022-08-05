@@ -134,6 +134,26 @@ const resetPassword = async (req, res) => {
     res.status(400).json({ errors: [getTokenError(e, "Password Reset")] });
   }
 };
+const getResetPasswordEmail = async (req, res) => {
+  try {
+    const data = verify(req.params.token, process.env.JWT_RESET_SECRET);
+    if (data) {
+      await User.findOne({
+        where: { email: data.email },
+      })
+        .then((resp) => {
+          if (!resp)
+            return res.status(400).json({ errors: ["User Not Found"] });
+          res.status(200).json(resp);
+        })
+        .catch((e) => {
+          getError(e, res);
+        });
+    }
+  } catch (e) {
+    res.status(400).json({ errors: [getTokenError(e, "Password Reset")] });
+  }
+};
 const sendResetPasswordMail = async (req, res) => {
   const { email } = req.body;
   await User.findOne({
@@ -159,4 +179,5 @@ module.exports = {
   verifyEmail,
   resetPassword,
   sendResetPasswordMail,
+  getResetPasswordEmail,
 };
