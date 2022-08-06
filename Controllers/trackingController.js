@@ -10,8 +10,9 @@ const findByParam = async (req, res) => {
     where: { id: req.user.id, date: req.body.date },
   })
     .then((resp) => {
-      const { data } = resp;
-      res.status(200).json(JSON.parse(data));
+      if (!resp)
+        return res.status(400).json({ errors: ["No Tracking Data Found"] });
+      if (resp) return res.status(200).json(JSON.parse(resp.data));
     })
     .catch((e) => {
       getError(e, res);
