@@ -7,7 +7,7 @@ const findByParam = async (req, res) => {
   await Tracking.findOne({
     // order: [["title", "DESC"]],
     // attributes: ["username"],
-    where: { id: req.user.id, date: req.body.date },
+    where: { user_id: req.user.id, date: req.body.date },
   })
     .then((resp) => {
       if (!resp)
